@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from app.core.config import settings
+from app.api.v1.router import api_router
+
 
 
 app = FastAPI(
@@ -8,6 +10,8 @@ app = FastAPI(
     description="AI-powered content moderation pipeline with multi-agent architecture",
     debug=settings.DEBUG,
 )
+
+app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/healthz")
