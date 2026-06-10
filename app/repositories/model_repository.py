@@ -37,7 +37,7 @@ class ModelRepository:
             raise RuntimeError(f"Model version '{version}' not found. "
                                f"Available: {list(self._models.keys())}")
 
-        result = self._models[version](<text, truncation=True, max_length=512>)
+        result = self._models[version](text, truncation=True, max_length=512)
 
         return {
             "label": result[0]["label"],
