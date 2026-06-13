@@ -21,5 +21,16 @@ class ModerationLog(Base):
     processing_time_ms = Column(Float)
     created_at = Column(DateTime, server_default=func.now(), index=True)
 
+class FeedbackLog(Base):
+    """Human feedback on moderation decisions — was the model right?"""
+    __tablename__ = "feedback_logs"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    moderation_id = Column(UUID(as_uuid=True), nullable=False, index=True)
+    correct_verdict = Column(String(20), nullable=False)
+    feedback_source = Column(String(50), default="human_reviewer")
+    was_model_correct = Column(Boolean, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+
     def __repr__(self):
         return f"<ModerationLog {self.id} verdict={self.verdict} score={self.toxicity_score}>"
