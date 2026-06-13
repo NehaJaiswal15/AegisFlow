@@ -8,7 +8,7 @@ from app.api.v1.router import api_router
 from app.repositories.model_repository import model_repo
 
 # Import models so SQLAlchemy knows about them
-from app.models.database import ModerationLog  # noqa: F401
+from app.models.database import ModerationLog, FeedbackLog 
 
 
 @asynccontextmanager
