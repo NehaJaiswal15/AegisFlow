@@ -6,3 +6,6 @@ python-dotenv==1.0.1
 transformers==4.44.2
 numpy==1.26.4
 torch==2.4.1
+sqlalchemy[asyncio]==2.0.35
+asyncpg==0.29.0
+alembic==1.13.2
