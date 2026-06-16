@@ -19,6 +19,12 @@ class Settings(BaseSettings):
     DB_PORT: str = "5432"
     DB_NAME: str = "content_moderation"
 
+    # Redis & Celery settings
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: int = 6379
+    CELERY_BROKER_URL: str = "redis://redis:6379/0"
+    CELERY_RESULT_BACKEND: str = "redis://redis:6379/1"
+
     @property
     def DATABASE_URL(self) -> str:
         """Build the async database connection string."""
