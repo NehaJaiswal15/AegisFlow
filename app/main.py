@@ -1,14 +1,16 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
 from app.core.config import settings
 from app.core.database import engine, Base
+from app.core.exceptions import AegisFlowException
 from app.api.v1.router import api_router
 from app.repositories.model_repository import model_repo
 
 # Import models so SQLAlchemy knows about them
-from app.models.database import ModerationLog, FeedbackLog 
+from app.models.database import ModerationLog, FeedbackLog  # noqa: F401
 
 
 @asynccontextmanager
@@ -32,6 +34,19 @@ app = FastAPI(
     debug=settings.DEBUG,
     lifespan=lifespan,
 )
+
+
+@app.exception_handler(AegisFlowException)
+async def aegisflow_exception_handler(request: Request, exc: AegisFlowException):
+    """Catch all custom AegisFlow exceptions and return clean JSON errors."""
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "error": exc.__class__.__name__,
+            "message": exc.message,
+        },
+    )
+
 
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
