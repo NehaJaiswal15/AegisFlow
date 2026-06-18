@@ -26,5 +26,7 @@ class ModerationResponse(BaseModel):
     model_version: str
     processing_time_ms: float
     timestamp: datetime
+    from_cache: bool = False
+
 
     model_config = {"protected_namespaces": ()}
