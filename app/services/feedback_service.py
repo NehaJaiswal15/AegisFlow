@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.repositories.feedback_db_repository import feedback_db_repo
+from app.core.exceptions import ModerationNotFoundError
 
 
 class FeedbackService:
@@ -14,13 +15,11 @@ class FeedbackService:
     ) -> dict:
         """Compare human feedback with model's original prediction."""
 
-        # Look up the original moderation decision
         original = await feedback_db_repo.get_moderation_by_id(session, moderation_id)
 
         if original is None:
-            raise ValueError(f"Moderation ID {moderation_id} not found")
+            raise ModerationNotFoundError(str(moderation_id))
 
-        # Was the model correct?
         was_correct = original.verdict == correct_verdict
 
         feedback_data = {
